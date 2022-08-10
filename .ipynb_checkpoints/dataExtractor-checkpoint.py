@@ -5,11 +5,11 @@ from humanPoseDetector import poseDetector
 
 
 class Extractor:
-    def __init__(self, render=False):
+    def __init__(self, render=False, scaleFactor=1):
         self.actions   = ['handshake', 'waving', 'yawning', 'walking', 'bowing', 'punching', 'standing',
                           'sitting', 'scratchingHead', 'defending', 'reachingUp']
         self.parentDir = os.path.join("/", *"/Users/calvin/Documents/NUIG/Thesis/".split("/"))
-        self.detector  = poseDetector(renderOutput=render, scaleFactor=0.5)
+        self.detector  = poseDetector(renderOutput=render, scaleFactor=scaleFactor)
 
     def run(self):
         master_timer = time.perf_counter()
@@ -33,6 +33,10 @@ class Extractor:
                     else:
                         print("\t", video_file, " "*(20-len(video_file)), "exists")
         print("\nTotal Execution time:", round(time.perf_counter() - master_timer))
+        
+    def runSample(self, file_path):
+        self.detector.run(file_path)
+        
                     
-ex = Extractor(render=False)
-ex.run()
+ex = Extractor(render=True, scaleFactor=0.5)
+ex.runSample("/Users/calvin/Documents/NUIG/Thesis/Movies/bowing/DJI_0317.MP4")
