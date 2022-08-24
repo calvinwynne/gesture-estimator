@@ -3,11 +3,9 @@ import cv2
 import time
 from humanPoseDetector import poseDetector
 
-
 class Extractor:
     def __init__(self, render=False, scaleFactor=1):
-        self.actions   = ['handshake', 'waving', 'yawning', 'walking', 'bowing', 'punching', 'standing',
-                          'sitting', 'scratchingHead', 'defending', 'reachingUp']
+        self.actions   = ['handshake', 'waving', 'yawning', 'walking', 'bowing', 'punching', 'standing', 'sitting', 'touchinghead', 'defending', 'reachingup']
         self.parentDir = os.path.join("/", *"/Users/calvin/Documents/NUIG/Thesis/".split("/"))
         self.detector  = poseDetector(renderOutput=render, scaleFactor=scaleFactor)
 
@@ -24,8 +22,8 @@ class Extractor:
                     if not os.path.isdir(os.path.join(self.parentDir, "extractedData", action)):
                         os.mkdir(os.path.join(self.parentDir, "extractedData", action))
                     start = time.perf_counter()
-                    outputFile = os.path.join(self.parentDir, "extractedData", action, video_file.split(".")[0])
-                    if not os.path.isfile(outputFile+".npy"):
+                    outputFile = os.path.join(self.parentDir, "extractedData", action, video_file.split(".")[0] + ".npy")
+                    if not os.path.isfile(outputFile):
                         print("\t", video_file, " "*(20-len(video_file)), end="")
                         self.detector.run(os.path.join(action_folder, video_file))
                         self.detector.save(outputFile)
@@ -38,5 +36,5 @@ class Extractor:
         self.detector.run(file_path)
         
                     
-ex = Extractor(render=True, scaleFactor=0.5)
-ex.runSample("/Users/calvin/Documents/NUIG/Thesis/Movies/bowing/DJI_0317.MP4")
+ex = Extractor(render=False, scaleFactor=0.5)
+ex.run()
